@@ -1,0 +1,76 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 100;
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  color: #e91e63;
+  font-weight: bold;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  margin: 0;
+  align-items: center;
+}
+
+.navbar ul li {
+  position: relative;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.navbar ul li a,
+.navbar ul li span,
+.navbar ul li a:visited {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.navbar ul li a:hover,
+.navbar ul li span:hover {
+  color: #e91e63;
+}
+
+.phone {
+  font-weight: bold;
+  color: #9b4c4c;
+}
+
+/* Dropdown styles */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  min-width: 180px;
+  padding: 10px 0;
+  display: block;
+  flex-direction: column;
+  z-index: 200;
+}
+
+.dropdown-menu li {
+  display: block;
+  padding: 8px 20px;
+  white-space: nowrap;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0c1c1;
+}
+
+.dropdown-toggle {
+  user-select: none;
+}
