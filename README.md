@@ -1,6 +1,4 @@
 
-
-````markdown
 #  Beauty Parlour Website
 
 A full-stack web application for a modern beauty parlour, offering services, gallery, appointment booking, secure user authentication, payment via Razorpay, and admin order tracking.
