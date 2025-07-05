@@ -1,0 +1,301 @@
+/* Main Page Layout */
+.buy-now-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+  .buy-now-page {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 32px;
+  }
+}
+
+/* Image Section */
+.product-image-section {
+  width: 100%;
+  text-align: center;
+}
+
+.product-image-section img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Details Section */
+.product-details-section {
+  flex: 1;
+  padding: 10px 0;
+}
+
+.product-details-section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #222;
+  text-align: center;
+}
+
+.product-description {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: #444;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.product-price {
+  font-size: 22px;
+  font-weight: 600;
+  color: #e91e63;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Quantity Selector */
+.quantity-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.quantity-selector label {
+  font-weight: 500;
+  color: #333;
+  font-size: 16px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #f7f7f7;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.stepper button {
+  background-color: #ff4081;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.stepper button:hover {
+  background-color: #e91e63;
+}
+
+.stepper span {
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Customer Info Form */
+.customer-info {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.6s ease-in;
+  background-color: #fff0f5; /* subtle pinkish background to distinguish */
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(255, 64, 129, 0.2);
+  max-width: 400px;
+  margin: 0 auto; /* center form on small screens */
+}
+
+.customer-info input {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.customer-info input:focus {
+  border-color: #F37254;
+  outline: none;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+@media (min-width: 500px) {
+  .button-group {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.buy-now-button,
+.add-to-cart-button,
+.download-invoice-button {
+  padding: 12px 0;
+  width: 220px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.buy-now-button {
+  background-color: #ff4081;
+  color: #fff;
+}
+
+.buy-now-button:hover {
+  background-color: #e91e63;
+}
+
+.add-to-cart-button {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.add-to-cart-button:hover {
+  background-color: #ffb300;
+}
+
+.download-invoice-btn{
+  background-color:  #ff4081;
+  color: #fff;
+}
+
+.download-invoice-btn:hover {
+  background-color: #e91e63;
+}
+
+/* Thank You Page */
+.thank-you-page {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 40px 24px;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.thank-you-page h2 {
+  color: #2e7d32;
+  margin-bottom: 16px;
+}
+
+.thank-you-page p {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+/* Invoice */
+.invoice {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  max-width: 100%;
+  text-align: left;
+}
+
+.invoice h3 {
+  margin-bottom: 16px;
+  color:black;
+  font-size: 20px;
+}
+
+.invoice p {
+  margin: 4px 0;
+  font-size: 15px;
+  color: #333;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Amazon Style Product Description === */
+.amazon-style {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+  text-align: left;
+  color: #333;
+}
+
+.amazon-style .features-box,
+.amazon-style .about-box {
+  margin-bottom: 20px;
+}
+
+.amazon-style .section-heading {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: #222;
+  border-bottom: 2px solid #ff4081;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.amazon-style .feature-list {
+  list-style-type: disc;
+  padding-left: 24px;
+  color: #555;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.amazon-style .feature-list li {
+  margin-bottom: 8px;
+}
+
+.amazon-style .about-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #555;
+  white-space: pre-wrap;
+}

@@ -1,0 +1,35 @@
+.gallery-container {
+  padding: 110px 20px 40px; /* top padding increased to 110px (70px navbar + original 40px) */
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fefefe;
+}
+
+.gallery-container h2 {
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #333;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.image-card {
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.image-card img:hover {
+  transform: scale(1.05);
+}

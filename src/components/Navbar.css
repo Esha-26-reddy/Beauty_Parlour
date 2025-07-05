@@ -28,12 +28,14 @@
   cursor: pointer;
 }
 
+/* All nav links including "My Orders" */
 .navbar ul li a,
 .navbar ul li span,
 .navbar ul li a:visited {
   text-decoration: none;
   color: #333;
   display: block;
+  transition: color 0.3s ease;
 }
 
 .navbar ul li a:hover,
@@ -73,4 +75,131 @@
 
 .dropdown-toggle {
   user-select: none;
+}
+
+/* 🎯 Logout button styles */
+.logout-button {
+  background: none;
+  border: none;
+  color: #333;
+  font-weight: 500;
+  margin: 0 15px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.logout-button:hover {
+  color: #e91e63; /* Pink on hover */
+}
+
+/* Cart icon styles */
+.cart-link {
+  position: relative;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: #ff4081;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  padding: 2px 6px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* Back button */
+.back-button {
+  background: none;
+  border: none;
+  color: #ff4081;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 15px;
+  user-select: none;
+  transition: color 0.3s ease;
+  padding: 0;
+}
+
+.back-button:hover {
+  color: #e91e63;
+}
+
+/* Sticky navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Left section containing back button + logo */
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Back button (again — consolidated styling) */
+.back-button {
+  background: none;
+  border: none;
+  color: #ff4081;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  transition: color 0.3s ease;
+  padding: 0;
+}
+
+.back-button:hover:not(.disabled) {
+  color: #e91e63;
+}
+
+/* Disabled state for back button */
+.back-button.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Logo text */
+.logo {
+  font-weight: 700;
+  font-size: 20px;
+  color: #222;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Navigation styles */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
 }
