@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import './ForgotPassword.css'; // Import CSS file
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // Simple email format validation
   const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
   const handleSubmit = async (e) => {
@@ -25,7 +26,7 @@ const ForgotPassword = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/auth/forgot-password', // ✅ Make sure this is correct
+        'http://localhost:5000/api/auth/forgot-password',
         { email },
         {
           headers: {
@@ -35,8 +36,11 @@ const ForgotPassword = () => {
       );
 
       setMessage(res.data.message || 'Verification code sent! Check your email.');
+
+      setTimeout(() => {
+        navigate('/verify-code');
+      }, 1500);
     } catch (err) {
-      console.error('Forgot Password Error:', err);
       setError(err.response?.data?.message || 'Failed to send verification code.');
     } finally {
       setLoading(false);
@@ -47,7 +51,17 @@ const ForgotPassword = () => {
     <div style={containerStyle}>
       <h2 style={headingStyle}>Forgot Password</h2>
 
-      {message && <p style={successStyle}>{message}</p>}
+      {message && (
+        <>
+          <p style={successStyle}>{message}</p>
+          <p style={{ textAlign: 'center' }}>
+            <Link to="/verify-code" className="link-custom">
+              Enter verification code
+            </Link>
+          </p>
+        </>
+      )}
+
       {error && <p style={errorStyle}>{error}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -60,14 +74,14 @@ const ForgotPassword = () => {
           autoComplete="email"
           style={inputStyle}
         />
-        <button type="submit" disabled={loading} style={buttonStyle}>
+        <button type="submit" disabled={loading} className="button-custom">
           {loading ? 'Sending...' : 'Send Verification Code'}
         </button>
       </form>
 
       <p style={footerTextStyle}>
         Remembered password?{' '}
-        <Link to="/login" style={linkStyle}>
+        <Link to="/login" className="link-custom">
           Login
         </Link>
       </p>
@@ -101,18 +115,6 @@ const inputStyle = {
   boxSizing: 'border-box',
 };
 
-const buttonStyle = {
-  width: '100%',
-  padding: 10,
-  fontSize: 16,
-  fontWeight: 'bold',
-  backgroundColor: '#e91e63',
-  color: '#fff',
-  border: 'none',
-  borderRadius: 5,
-  cursor: 'pointer',
-};
-
 const successStyle = {
   color: 'green',
   textAlign: 'center',
@@ -128,12 +130,6 @@ const errorStyle = {
 const footerTextStyle = {
   textAlign: 'center',
   marginTop: 15,
-};
-
-const linkStyle = {
-  color: '#e91e63',
-  fontWeight: 'bold',
-  textDecoration: 'none',
 };
 
 export default ForgotPassword;

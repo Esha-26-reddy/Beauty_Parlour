@@ -112,7 +112,7 @@ const Home = () => {
         <p>Contact Us:</p>
         <div className="footer-links">
           <a href="tel:+91 9876543210" className="footer-link">
-            <FaPhoneAlt /> +91 98765 43210
+            <FaPhoneAlt /> +91 8978452925
           </a>
           <a
             href="mailto:rohinibeautyparlour@gmail.com"
@@ -120,7 +120,7 @@ const Home = () => {
             rel="noopener noreferrer"
             className="footer-link"
           >
-            <FaEnvelope /> rohinibeautyparlour@gmail.com
+            <FaEnvelope /> rohinibeautyparlour01@gmail.com
           </a>
           <a
             href="https://instagram.com/rohinibeauty"
@@ -128,7 +128,7 @@ const Home = () => {
             rel="noopener noreferrer"
             className="footer-link"
           >
-            <FaInstagram /> @rohinibeauty
+            <FaInstagram /> beautyparlour_rohini
           </a>
         </div>
         <p>© 2025 Rohini Beauty Parlour. All rights reserved.</p>

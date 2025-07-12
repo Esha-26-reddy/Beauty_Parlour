@@ -1,43 +1,60 @@
-// src/components/VerifyCode.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './ForgotPassword.css'; // reuse the same CSS file with .button-custom and .link-custom
 
 const VerifyCode = () => {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleVerify = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError(null);
+    setMessage(null);
 
+    if (!email || !code) {
+      setError('Please fill all fields');
+      return;
+    }
+
+    setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/auth/verify-code', { email, code });
+      const res = await axios.post('http://localhost:5000/api/auth/verify-code', {
+        email,
+        code,
+      });
 
-      alert('Code verified successfully');
-      localStorage.setItem('resetEmail', email); // Store email for password reset
-      navigate('/reset-password');
+      setMessage(res.data.message || 'Code verified successfully!');
+      localStorage.setItem('resetEmail', email);
+      localStorage.setItem('resetCode', code);
+
+      setTimeout(() => {
+        navigate('/reset-password');
+      }, 1000);
     } catch (err) {
-      console.error("Verification Error:", err);
-      setError(err.response?.data?.message || 'Invalid verification code');
+      setError(err.response?.data?.message || 'Invalid or expired code');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div style={containerStyle}>
-      <h2 style={{ color: '#e91e63', textAlign: 'center' }}>Verify Code</h2>
+      <h2 style={headingStyle}>Verify Code</h2>
 
+      {message && <p style={successStyle}>{message}</p>}
       {error && <p style={errorStyle}>{error}</p>}
 
-      <form onSubmit={handleVerify}>
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
-          placeholder="Your Email"
+          placeholder="Your registered email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
           style={inputStyle}
         />
         <input
@@ -45,16 +62,16 @@ const VerifyCode = () => {
           placeholder="Enter 6-digit code"
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          required
           style={inputStyle}
         />
-        <button type="submit" style={buttonStyle}>Verify</button>
+        <button type="submit" style={{}} className="button-custom" disabled={loading}>
+          {loading ? 'Verifying...' : 'Verify Code'}
+        </button>
       </form>
     </div>
   );
 };
 
-// ✅ Styles
 const containerStyle = {
   maxWidth: 400,
   margin: '80px auto',
@@ -62,7 +79,13 @@ const containerStyle = {
   border: '1px solid #eee',
   borderRadius: 10,
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  backgroundColor: '#fff'
+  backgroundColor: '#fff',
+};
+
+const headingStyle = {
+  textAlign: 'center',
+  color: '#e91e63',
+  marginBottom: 20,
 };
 
 const inputStyle = {
@@ -72,25 +95,18 @@ const inputStyle = {
   fontSize: 16,
   borderRadius: 5,
   border: '1px solid #ccc',
-  boxSizing: 'border-box'
 };
 
-const buttonStyle = {
-  width: '100%',
-  padding: 10,
-  backgroundColor: '#e91e63',
-  color: '#fff',
-  fontWeight: 'bold',
-  fontSize: 16,
-  border: 'none',
-  borderRadius: 5,
-  cursor: 'pointer'
+const successStyle = {
+  color: 'green',
+  textAlign: 'center',
+  marginBottom: 10,
 };
 
 const errorStyle = {
   color: 'red',
+  textAlign: 'center',
   marginBottom: 10,
-  textAlign: 'center'
 };
 
 export default VerifyCode;

@@ -14,7 +14,8 @@ const products = [
     name: "Rahul Phate’s Volume Care Shampoo",
     description:
       "Deep cleans oily scalp, adds volume with Bond-Bodifying Technology & nourishes with Vitamin B5.",
-    price: 229,
+    price: 180,
+    packSize: "200ml",
     image: product1,
   },
   {
@@ -22,7 +23,8 @@ const products = [
     name: "Rahul Phate’s Sensicure Shampoo",
     description:
       "For dry, brittle hair. pH-balanced with AHA and Vitamin B5 to nourish and add shine.",
-    price: 249,
+    price: 180,
+    packSize: "200ml",
     image: product2,
   },
   {
@@ -30,7 +32,8 @@ const products = [
     name: "Smart Herbal Multani Mitti Soap",
     description:
       "Cleanses and detoxifies with Multani Mitti. Great for oily, acne-prone skin.",
-    price: 149,
+    price: 50,
+    packSize: "90g",
     image: product3,
   },
   {
@@ -38,7 +41,8 @@ const products = [
     name: "Rahul Phate’s Purusham Face Wash",
     description:
       "AHA-based exfoliating face wash for oily, acne-prone skin. Reduces dark spots and tan.",
-    price: 189,
+    price: 249,
+    packSize: "100ml",
     image: product4,
   },
   {
@@ -46,7 +50,8 @@ const products = [
     name: "Rahul Phate’s Gaurangi Sunscreen SPF 50",
     description:
       "Light, PABA-free sunscreen with Zinc Oxide and Allantoin. Controls odor and reduces tan.",
-    price: 199,
+    price: 399,
+    packSize: "100ml",
     image: product5,
   },
   {
@@ -55,6 +60,7 @@ const products = [
     description:
       "Non-sticky moisturizer with Niacinamide, SPF, and Vitamin E. Ideal for all ages and skin types.",
     price: 299,
+    packSize: "100ml",
     image: product6,
   },
   {
@@ -62,7 +68,8 @@ const products = [
     name: "Lice-X Liquid by Can-Vet",
     description:
       "Ready-to-use Permethrin-based insecticide for lice and horn flies in cattle. Certificate required.",
-    price: 349,
+    price: 200,
+    packSize: "100ml",
     image: product7,
   },
   {
@@ -70,7 +77,8 @@ const products = [
     name: "Advanced Pigmentation Cream",
     description:
       "Brightening formula with Kojic Acid, Alpha Arbutin & Vitamin C. Fades melasma and acne marks.",
-    price: 329,
+    price: 250,
+    packSize: "30g",
     image: product8,
   },
   {
@@ -78,7 +86,8 @@ const products = [
     name: "100% Natural Henna Powder",
     description:
       "Pure, chemical-free henna for natural hair color and conditioning. Safe for all hair types.",
-    price: 89,
+    price: 120,
+    packSize: "250g",
     image: product9,
   },
 ];

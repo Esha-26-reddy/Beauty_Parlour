@@ -5,7 +5,7 @@ function generateGroupedInvoicePDFBuffer({
   customerName,
   customerEmail,
   customerPhone,
-  products, // array of { productName, quantity, unitPrice, total }
+  products, // array of { productName, quantity, unitPrice, totalPrice }
   totalAmount,
 }) {
   return new Promise((resolve, reject) => {
@@ -41,11 +41,11 @@ function generateGroupedInvoicePDFBuffer({
       // Table rows
       let rowY = tableTop + 20;
       doc.font("Helvetica");
-      products.forEach(({ productName, quantity, unitPrice, total }) => {
+      products.forEach(({ productName, quantity, unitPrice, totalPrice }) => {
         doc.text(productName, itemX, rowY)
           .text(quantity, qtyX, rowY)
           .text(`₹${unitPrice.toFixed(2)}`, priceX, rowY)
-          .text(`₹${total.toFixed(2)}`, totalX, rowY);
+          .text(`₹${totalPrice.toFixed(2)}`, totalX, rowY);
         rowY += 20;
       });
 

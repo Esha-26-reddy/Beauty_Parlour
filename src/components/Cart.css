@@ -85,6 +85,23 @@
   background-color: #e91e63;
 }
 
+/* ===== Add to Cart Button (Updated to Pink) ===== */
+.add-to-cart-btn {
+  background-color: #ff4081;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #e91e63;
+}
+
 /* ===== Cart Summary ===== */
 .cart-summary {
   margin-top: 2.5rem;

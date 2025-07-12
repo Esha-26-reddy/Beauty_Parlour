@@ -25,10 +25,7 @@ function generateGroupedInvoicePDFBuffer({
       const buffers = [];
 
       doc.on("data", (chunk) => buffers.push(chunk));
-      doc.on("end", () => {
-        const pdfBuffer = Buffer.concat(buffers);
-        resolve(pdfBuffer);
-      });
+      doc.on("end", () => resolve(Buffer.concat(buffers)));
 
       // Header
       doc.fontSize(20).text("Rohini Beauty Parlour - Invoice", { align: "center" });
@@ -44,6 +41,7 @@ function generateGroupedInvoicePDFBuffer({
       // Table headers
       const tableTop = doc.y;
       const itemX = 50, qtyX = 300, priceX = 370, totalX = 450;
+
       doc.font("Helvetica-Bold")
         .text("Product", itemX, tableTop)
         .text("Quantity", qtyX, tableTop)
@@ -67,6 +65,7 @@ function generateGroupedInvoicePDFBuffer({
 
       doc.end();
     } catch (err) {
+      console.error("❌ PDF generation failed:", err);
       reject(err);
     }
   });
@@ -75,6 +74,10 @@ function generateGroupedInvoicePDFBuffer({
 // Main function to send confirmation email
 async function sendPaymentConfirmationEmail(toEmail, invoiceData) {
   try {
+    if (!invoiceData || !invoiceData.products || invoiceData.products.length === 0) {
+      throw new Error("Invoice data is incomplete or empty");
+    }
+
     const products = invoiceData.products.map((p) => ({
       productName: p.productName,
       quantity: p.quantity,
@@ -94,7 +97,7 @@ async function sendPaymentConfirmationEmail(toEmail, invoiceData) {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Rohini Beauty Parlour" <${process.env.EMAIL_USER}>`,
       to: toEmail,
       subject: "Payment Confirmation & Invoice from Rohini Beauty Parlour",
       html: `
@@ -115,11 +118,9 @@ async function sendPaymentConfirmationEmail(toEmail, invoiceData) {
     };
 
     await transporter.sendMail(mailOptions);
-
     console.log("✅ Email sent successfully");
   } catch (error) {
     console.error("❌ Failed to send confirmation email:", error);
-    throw error;
   }
 }
 

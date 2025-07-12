@@ -73,6 +73,12 @@
   color: #e91e63;
   margin-bottom: 1rem;
 }
+.product-packsize {
+  font-size: 18px;   /* increased from 16px */
+  font-weight: 600;  /* slightly bolder */
+  color: #333;
+  margin: 6px 0;
+}
 
 .buy-now-link {
   display: inline-block;

@@ -1,59 +1,88 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './ForgotPassword.css'; // reuse the same CSS file
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
-  const [code, setCode] = useState('');
-  const [error, setError] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const email = localStorage.getItem('resetEmail'); // Comes from VerifyCode
 
-  const handleReset = async (e) => {
+  // Grab stored email and code from localStorage
+  const resetEmail = localStorage.getItem('resetEmail');
+  const resetCode = localStorage.getItem('resetCode');
+
+  useEffect(() => {
+    if (!resetEmail || !resetCode) {
+      navigate('/forgot-password');
+    }
+  }, [resetEmail, resetCode, navigate]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError(null);
+    setMessage(null);
+
+    if (!newPassword || !confirmPassword) {
+      setError('Please fill all fields');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
 
     try {
-      await axios.post('http://localhost:5000/api/auth/reset-password', {
-        email,
-        code,
+      const res = await axios.post('http://localhost:5000/api/auth/reset-password', {
+        email: resetEmail,
+        code: resetCode,
         newPassword,
       });
 
-      alert('Password reset successful! Please login.');
+      setMessage(res.data.message || 'Password reset successful!');
       localStorage.removeItem('resetEmail');
-      navigate('/login');
+      localStorage.removeItem('resetCode');
+
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || 'Reset failed');
+      setError(err.response?.data?.message || 'Failed to reset password');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div style={containerStyle}>
-      <h2 style={{ textAlign: 'center', color: '#e91e63' }}>Reset Password</h2>
+      <h2 style={headingStyle}>Reset Password</h2>
 
+      {message && <p style={successStyle}>{message}</p>}
       {error && <p style={errorStyle}>{error}</p>}
 
-      <form onSubmit={handleReset}>
-        <input
-          type="text"
-          placeholder="Enter 6-digit verification code"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          required
-          style={inputStyle}
-        />
-
+      <form onSubmit={handleSubmit}>
         <input
           type="password"
-          placeholder="Enter new password"
+          placeholder="New password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
-          required
           style={inputStyle}
         />
-
-        <button type="submit" style={buttonStyle}>Reset Password</button>
+        <input
+          type="password"
+          placeholder="Confirm new password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          style={inputStyle}
+        />
+        <button type="submit" className="button-custom" disabled={loading}>
+          {loading ? 'Resetting...' : 'Reset Password'}
+        </button>
       </form>
     </div>
   );
@@ -69,6 +98,12 @@ const containerStyle = {
   backgroundColor: '#fff',
 };
 
+const headingStyle = {
+  textAlign: 'center',
+  color: '#e91e63',
+  marginBottom: 20,
+};
+
 const inputStyle = {
   width: '100%',
   marginBottom: 15,
@@ -76,25 +111,18 @@ const inputStyle = {
   fontSize: 16,
   borderRadius: 5,
   border: '1px solid #ccc',
-  boxSizing: 'border-box',
 };
 
-const buttonStyle = {
-  width: '100%',
-  padding: 10,
-  backgroundColor: '#e91e63',
-  color: '#fff',
-  fontWeight: 'bold',
-  fontSize: 16,
-  border: 'none',
-  borderRadius: 5,
-  cursor: 'pointer',
+const successStyle = {
+  color: 'green',
+  textAlign: 'center',
+  marginBottom: 10,
 };
 
 const errorStyle = {
   color: 'red',
-  marginBottom: 10,
   textAlign: 'center',
+  marginBottom: 10,
 };
 
 export default ResetPassword;

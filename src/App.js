@@ -27,6 +27,10 @@ import ForgotPassword from "./components/ForgotPassword";
 import VerifyCode from "./components/VerifyCode";
 import ResetPassword from "./components/ResetPassword";
 
+// Optional: 404 page
+import NotFound from "./components/NotFound";
+
+
 function App() {
   return (
     <Router>
@@ -42,9 +46,11 @@ function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/order-history" element={<OrderHistory />} />
+
+            {/* Products Listing and Detail */}
             <Route path="/products" element={<Allproducts />} />
 
-            {/* Private Routes */}
+            {/* Protected Routes */}
             <Route
               path="/"
               element={
@@ -109,6 +115,9 @@ function App() {
                 </PrivateRoute>
               }
             />
+
+            {/* 404 Not Found */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </CartProvider>
       </AuthProvider>

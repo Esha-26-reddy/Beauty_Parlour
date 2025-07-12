@@ -6,7 +6,9 @@ const sendPaymentConfirmationEmail = require("../utils/sendPaymentConfirmationEm
 const path = require("path");
 const fs = require("fs");
 
-// POST single product order
+// ========================
+// ✅ Single Product Order
+// ========================
 router.post("/create", async (req, res) => {
   try {
     const {
@@ -21,14 +23,8 @@ router.post("/create", async (req, res) => {
     } = req.body;
 
     if (
-      !productId ||
-      !productName ||
-      !quantity ||
-      !amount ||
-      !paymentId ||
-      !customerName ||
-      !customerEmail ||
-      !customerPhone
+      !productId || !productName || !quantity || !amount || !paymentId ||
+      !customerName || !customerEmail || !customerPhone
     ) {
       return res.status(400).json({ message: "Missing required fields" });
     }
@@ -55,14 +51,19 @@ router.post("/create", async (req, res) => {
 
     const savedOrder = await newOrder.save();
 
-    await sendPaymentConfirmationEmail({
-      email: customerEmail,
-      bookingId: paymentId,
-      productName,
+    await sendPaymentConfirmationEmail(customerEmail, {
+      invoiceId: paymentId,
       customerName,
+      customerEmail,
       customerPhone,
-      quantity,
-      unitPrice,
+      products: [
+        {
+          productName,
+          quantity,
+          unitPrice,
+          totalPrice: amount,
+        },
+      ],
       totalAmount: amount,
     });
 
@@ -78,18 +79,16 @@ router.post("/create", async (req, res) => {
   }
 });
 
-// POST complete-cart
+// ========================
+// ✅ Cart Payment Order
+// ========================
 router.post("/complete-cart", async (req, res) => {
   try {
     const { email, name: customerName, phone: customerPhone, paymentId, cartItems } = req.body;
 
     if (
-      !email ||
-      !customerName ||
-      !customerPhone ||
-      !paymentId ||
-      !Array.isArray(cartItems) ||
-      cartItems.length === 0
+      !email || !customerName || !customerPhone || !paymentId ||
+      !Array.isArray(cartItems) || cartItems.length === 0
     ) {
       return res.status(400).json({ message: "Missing or invalid required fields" });
     }
@@ -114,19 +113,30 @@ router.post("/complete-cart", async (req, res) => {
       source: "cart",
     });
 
-    const savedOrder = await newOrder.save();
+    let savedOrder;
+    try {
+      savedOrder = await newOrder.save();
+      console.log("✅ Cart order saved:", savedOrder);
+    } catch (saveErr) {
+      console.error("❌ Failed to save cart order:", saveErr);
+      throw new Error("Order saving failed: " + saveErr.message);
+    }
 
-    await sendGroupedInvoiceEmail({
-      recipientEmail: email,
-      invoiceId: paymentId,
-      customerName,
-      customerEmail: email,
-      customerPhone,
-      products,
-      totalAmount,
-    });
-
-    console.log("✅ Grouped email sent from /complete-cart route.");
+    try {
+      await sendGroupedInvoiceEmail({
+        recipientEmail: email,
+        invoiceId: paymentId,
+        customerName,
+        customerEmail: email,
+        customerPhone,
+        products,
+        totalAmount,
+      });
+      console.log("✅ Grouped confirmation email sent");
+    } catch (emailErr) {
+      console.error("❌ Failed to send grouped invoice email:", emailErr);
+      throw new Error("Email sending failed: " + emailErr.message);
+    }
 
     res.status(200).json({
       message: "Grouped order saved and email sent",
@@ -134,11 +144,13 @@ router.post("/complete-cart", async (req, res) => {
     });
   } catch (error) {
     console.error("❌ Error in /complete-cart:", error);
-    res.status(500).json({ message: "Internal Server Error", error: error.message });
+    res.status(500).json({ message: "Payment succeeded but failed to send confirmation email or save orders.", error: error.message });
   }
 });
 
-// GET invoice download
+// ========================
+// ✅ Invoice Download
+// ========================
 router.get("/invoices/download/:invoiceId", (req, res) => {
   const invoiceId = req.params.invoiceId;
   const filePath = path.join(__dirname, `../utils/grouped_invoice_${invoiceId}.pdf`);
@@ -150,7 +162,9 @@ router.get("/invoices/download/:invoiceId", (req, res) => {
   }
 });
 
-// FIXED: GET order history (correct HTTP method and route)
+// ========================
+// ✅ Order History
+// ========================
 router.get("/history/:email", async (req, res) => {
   try {
     const email = req.params.email;

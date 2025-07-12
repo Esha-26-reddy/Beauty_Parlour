@@ -1,5 +1,6 @@
 const productDescriptions = {
   "rahul-volume-shampoo": {
+    
     shortHighlights: [
       "✅Deep cleans oily scalp without drying",
       "✅Maintains pH with gentle AHA exfoliation",

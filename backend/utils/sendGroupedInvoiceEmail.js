@@ -4,9 +4,18 @@ const generateGroupedInvoicePDFBuffer = require("./generateGroupedInvoicePDFBuff
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.EMAIL_USER, // your email address
-    pass: process.env.EMAIL_PASS, // your app password
+    user: process.env.EMAIL_USER, // your Gmail address
+    pass: process.env.EMAIL_PASS, // app password or OAuth2 token
   },
+});
+
+// Verify transporter configuration once at startup (optional but recommended)
+transporter.verify(function (error, success) {
+  if (error) {
+    console.error("❌ Nodemailer transporter verification failed:", error);
+  } else {
+    console.log("✅ Nodemailer transporter is ready");
+  }
 });
 
 async function sendGroupedInvoiceEmail({
@@ -19,7 +28,7 @@ async function sendGroupedInvoiceEmail({
   totalAmount,
 }) {
   try {
-    // 📄 Generate PDF buffer
+    // Generate PDF buffer
     const pdfBuffer = await generateGroupedInvoicePDFBuffer({
       invoiceId,
       customerName,
@@ -33,7 +42,16 @@ async function sendGroupedInvoiceEmail({
       from: `"Rohini Beauty Parlour" <${process.env.EMAIL_USER}>`,
       to: recipientEmail,
       subject: `🧾 Invoice & Confirmation - Rohini Beauty Parlour [ID: ${invoiceId}]`,
-      text: `Dear ${customerName},\n\nThank you for your purchase of ₹${totalAmount}.\nPlease find your invoice attached.\n\nFeel free to visit our store to collect your items or reach out with any queries.\n\nBest regards,\nRohini Beauty Parlour`,
+      text: `Dear ${customerName},
+
+Thank you for your purchase of ₹${totalAmount}.
+Please find your invoice attached.
+
+Feel free to visit our store to collect your items or reach out with any queries.
+
+Best regards,
+Rohini Beauty Parlour
+`,
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6;">
           <h2 style="color: #d63384;">Thank You for Your Purchase, ${customerName}!</h2>
@@ -48,8 +66,9 @@ async function sendGroupedInvoiceEmail({
       `,
       attachments: [
         {
-          filename: "Invoice.pdf",
+          filename: `Invoice_${invoiceId}.pdf`,
           content: pdfBuffer,
+          contentType: "application/pdf",
         },
       ],
     };
@@ -58,7 +77,7 @@ async function sendGroupedInvoiceEmail({
     console.log("✅ Grouped invoice email sent successfully.");
   } catch (err) {
     console.error("❌ Error sending grouped invoice email:", err);
-    throw err; // propagate error to caller
+    throw err; // Propagate error to caller
   }
 }
 
