@@ -200,7 +200,7 @@ const BuyNow = () => {
           <button
             onClick={() => navigate("/order-history")}
             className="view-orders-button"
-            style={{ marginTop: "10px" }}
+           style={{ marginTop: "10px" }}
           >
             📦 View Order History
           </button>

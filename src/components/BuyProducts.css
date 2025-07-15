@@ -94,3 +94,22 @@
 .buy-now-link:hover {
   background-color: #e91e63;
 }
+.disclaimer-banner {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffa500;
+  color: #856404;
+  padding: 8px 12px;        /* reduced padding */
+  margin: 12px 0;           /* reduced margin */
+  border-radius: 5px;       /* slightly smaller radius */
+  font-size: 0.9rem;        /* overall font size reduced */
+}
+
+.disclaimer-title {
+  font-weight: 600;
+  font-size: 0.95rem;       /* slightly smaller */
+  margin-bottom: 2px;
+}
+
+.disclaimer-text {
+  font-size: 0.85rem;
+}

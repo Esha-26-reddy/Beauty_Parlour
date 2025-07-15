@@ -7,6 +7,15 @@ const BuyProducts = () => {
   return (
     <div className="products-page">
       <h2 className="products-heading">Buy Products</h2>
+
+      {/* ✅ Disclaimer Banner */}
+      <div className="disclaimer-banner">
+        <p className="disclaimer-title">Important Notice:</p>
+        <p className="disclaimer-text">
+          Products will <strong>not be delivered</strong>. Kindly collect them from the parlour after successful payment.
+        </p>
+      </div>
+
       <div className="products-grid">
         {products.map((product) => (
           <div key={product.id} className="product-card">
@@ -17,11 +26,12 @@ const BuyProducts = () => {
             />
             <h3>{product.name}</h3>
 
-            {/* ✅ Add Pack Size here */}
-            <p className="product-packsize" style={{
-        
-              marginBottom: "4px"
-            }}>
+            <p
+              className="product-packsize"
+              style={{
+                marginBottom: "4px",
+              }}
+            >
               Pack Size: {product.packSize}
             </p>
 

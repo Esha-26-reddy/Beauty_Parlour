@@ -1,0 +1,105 @@
+/* Dim translucent background covering full viewport */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+}
+
+/* Centered modal login box */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 400px;
+  width: 90%;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.modal-title {
+  text-align: center;
+  color: #e91e63;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
+/* Alert message */
+.alert-message {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  border-radius: 5px;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Form styles */
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #e91e63;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover:not(:disabled) {
+  background-color: #d81b60;
+}
+
+.login-form button:disabled {
+  background-color: #f48fb1;
+  cursor: not-allowed;
+}
+
+.forgot-password,
+.register-link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.forgot-password a,
+.register-link a {
+  color: #e91e63;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.forgot-password a:hover,
+.register-link a:hover {
+  text-decoration: underline;
+}

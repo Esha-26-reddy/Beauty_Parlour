@@ -1,3 +1,4 @@
+// ✅ Top imports unchanged
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -30,7 +31,6 @@ import ResetPassword from "./components/ResetPassword";
 // Optional: 404 page
 import NotFound from "./components/NotFound";
 
-
 function App() {
   return (
     <Router>
@@ -38,27 +38,18 @@ function App() {
         <CartProvider>
           <Navbar />
           <Routes>
-            {/* Public Routes */}
+
+            {/* ✅ Public Routes */}
+            <Route path="/" element={<Home />} /> {/* 🟢 Now Home is public */}
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/verify-code" element={<VerifyCode />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/thank-you" element={<ThankYou />} />
-            <Route path="/order-history" element={<OrderHistory />} />
-
-            {/* Products Listing and Detail */}
             <Route path="/products" element={<Allproducts />} />
 
-            {/* Protected Routes */}
-            <Route
-              path="/"
-              element={
-                <PrivateRoute>
-                  <Home />
-                </PrivateRoute>
-              }
-            />
+            {/* ✅ Protected Routes */}
             <Route
               path="/about"
               element={
@@ -112,6 +103,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Appointment />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/order-history"
+              element={
+                <PrivateRoute>
+                  <OrderHistory />
                 </PrivateRoute>
               }
             />
