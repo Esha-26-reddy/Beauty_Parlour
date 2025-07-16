@@ -5,7 +5,7 @@ import './Gallery.css';
 const importAll = (requireContext) => requireContext.keys().map(requireContext);
 
 const images = importAll(
-  require.context('../assets/pictures.jpg', false, /\.(png|jpe?g|svg)$/)
+  require.context('../assets/pictures', false, /\.(png|jpe?g|svg)$/)
 );
 
 const Gallery = () => {
