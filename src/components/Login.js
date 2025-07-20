@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
-import "./Login.css"; // We'll create styles here
+import "./Login.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -16,6 +16,10 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(showLoginAlert);
+
+  // Use environment variable with fallback for local development
+  const API_BASE_URL =
+    process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -41,15 +45,18 @@ const Login = () => {
     setError(null);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email: formData.email.toLowerCase(),
-        password: formData.password,
-      });
+      const res = await axios.post(
+        `${API_BASE_URL}/api/auth/login`,
+        {
+          email: formData.email.toLowerCase(),
+          password: formData.password,
+        },
+        { withCredentials: true }
+      );
 
       const { token, user } = res.data;
       login(token, user);
       localStorage.setItem("userEmail", user.email);
-      // redirect handled in useEffect
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong");
       setLoading(false);
@@ -66,11 +73,7 @@ const Login = () => {
         <h2 className="modal-title">Login</h2>
 
         {/* Alert */}
-        {showAlert && (
-          <div className="alert-message">
-            Login to access all features.
-          </div>
-        )}
+        {showAlert && <div className="alert-message">Login to access all features.</div>}
 
         {/* Error message */}
         {error && <p className="error-message">{error}</p>}

@@ -5,60 +5,56 @@ const cors = require("cors");
 
 const app = express();
 
-// ==============================
-// ✅ Middleware
-// ==============================
-app.use(cors());
+// Middleware
+app.use(cors({
+  origin: "https://rohini-beauty-parlour.vercel.app",
+  credentials: true
+}));
 app.use(express.json());
 
-// ==============================
-// ✅ Connect to MongoDB
-// ==============================
+// MongoDB connection
 mongoose.set("strictQuery", false);
-
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB error:", err));
 
-// ==============================
-// ✅ Import Routes
-// ==============================
+// Routes
 const authRoutes = require("./routes/auth");
 const chatbotRoutes = require("./routes/chat");
-const paymentRoutes = require("./routes/paymentRoutes"); // <-- UPDATED here: use './routes/payment' assuming file is payment.js
-const cartPaymentRoutes = require("./routes/payment");   // cart payment
+const paymentRoutes = require("./routes/paymentRoutes");
+const cartPaymentRoutes = require("./routes/payment");
 const appointmentRoutes = require("./routes/appointments");
 const orderRoutes = require("./routes/orderRoutes");
 const confirmationEmailRoute = require("./routes/sendConfirmationEmail");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/chatbot", chatbotRoutes);
-app.use("/api/payment", paymentRoutes); // <-- Registered payment routes here
+app.use("/api/payment", paymentRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api", confirmationEmailRoute); // For /api/send-confirmation-email
+app.use("/api", confirmationEmailRoute);
 
 app.get("/api/orders/test", (req, res) => {
-  res.json({ message: "Order routes test from server.js works!" });
+  res.json({ message: "Order routes test works!" });
 });
 
 app.get("/", (req, res) => {
-  res.send("✅ Backend server is up and running!");
+  res.send("Backend server is running!");
 });
 
+// Error handler
 app.use((err, req, res, next) => {
-  console.error("🔥 Global error:", err.stack);
+  console.error("Error:", err.stack);
   res.status(500).json({
     message: err.message,
-    stack: process.env.NODE_ENV === "production" ? "🔒 Hidden" : err.stack,
+    stack: process.env.NODE_ENV === "production" ? "Hidden" : err.stack,
   });
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
