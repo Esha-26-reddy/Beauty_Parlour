@@ -13,27 +13,27 @@ import {
 
 const heroSlides = [
   {
-    image: "/images/vecteezy_ai-generated-beautiful-woman-with-long-curly-brown-hair_36804136.jpg",
+    image: "/Images/vecteezy_ai-generated-beautiful-woman-with-long-curly-brown-hair_36804136.jpg",
     title: "Elegant Haircuts",
     description: "Transform your style with our trending haircuts."
   },
   {
-    image: "/images/beautiful-young-woman-wearing-sari.jpg",
+    image: "/Images/beautiful-young-woman-wearing-sari.jpg",
     title: "Bridal Perfection",
     description: "Flawless makeup for your big day."
   },
   {
-    image: "/images/beautiful-woman-getting-beauty-treatment.jpg",
+    image: "/Images/beautiful-woman-getting-beauty-treatment.jpg",
     title: "Glow Facial",
     description: "Refresh your skin with our radiant facial."
   },
   {
-    image: "/images/woman-s-feet-bowl-with-water-petal (1).jpg",
+    image: "/Images/woman-s-feet-bowl-with-water-petal (1).jpg",
     title: "Relaxing Pedicure",
     description: "Revive tired feet with expert care."
   },
   {
-    image: "/images/mehndi-wedding-ornament-hands-drawn-by-henna.jpg",
+    image: "/Images/mehndi-wedding-ornament-hands-drawn-by-henna.jpg",
     title: "Bridal Mehendi",
     description: "Intricate designs for your special moments."
   }
