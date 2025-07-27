@@ -8,6 +8,9 @@ function Chatbot() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const API_BASE_URL =
+    process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
 
   // Auto scroll to bottom when messages update
   useEffect(() => {
@@ -23,7 +26,7 @@ function Chatbot() {
 
     try {
       // Call backend API
-      const response = await axios.post('http://localhost:5000/api/chatbot', { message: input });
+      const response = await axios.post(`${API_BASE_URL}/api/chatbot`, { message: input });
 
       // Add bot reply
       setMessages(prev => [

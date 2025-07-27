@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "https://rohini-beauty-parlour.vercel.app",
+  origin: ["https://rohini-beauty-parlour.vercel.app", "http://localhost:3000"],
   credentials: true
 }));
 app.use(express.json());
@@ -19,7 +19,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("MongoDB connected"))
+  .then(() => console.log("MongoDB connected \n"))
   .catch((err) => console.error("MongoDB error:", err));
 
 // Routes
@@ -57,4 +57,4 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`\nServer running at http://localhost:${PORT}`));
