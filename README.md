@@ -6,7 +6,8 @@ A full-stack web application for a modern beauty parlour, offering services, gal
 ---
 
 ##  Screenshots
-![Uploading ss1.png…]()
+<img width="1345" height="634" alt="ss1" src="https://github.com/user-attachments/assets/26e29533-6957-42dd-b0fc-5d005a1e09f6" />
+
 
 
 ---
