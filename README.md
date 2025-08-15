@@ -6,6 +6,7 @@ A full-stack web application for a modern beauty parlour, offering services, gal
 ---
 
 ##  Screenshots
+![Uploading ss1.png…]()
 
 
 ---
