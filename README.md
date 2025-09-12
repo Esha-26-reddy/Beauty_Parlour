@@ -75,7 +75,7 @@ JWT_SECRET=your_jwt_secret
 EMAIL_USER=your_gmail_email
 EMAIL_PASS=your_gmail_app_password
 RAZORPAY_KEY_ID=your_razorpay_key_id
-RAZORPAY_KEY_SECRET=your_razorpay_secret
+RAZORPAY_SECRET=your_razorpay_secret
 ```
 
 Start the backend:
