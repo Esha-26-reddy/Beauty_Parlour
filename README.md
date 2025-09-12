@@ -89,7 +89,7 @@ npm start
 ```bash
 cd ../
 npm install
-npm start
+npm run start
 ```
 
 ---
