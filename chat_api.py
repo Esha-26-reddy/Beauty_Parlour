@@ -11,7 +11,7 @@ with open('vectorizer.pkl', 'rb') as f:
     vectorizer = pickle.load(f)
 
 app = Flask(__name__)
-CORS(app, origins=["https://your-frontend.com"])  # restrict frontend domain
+CORS(app, origins=["https://rohini-beauty-parlour.vercel.app"])  # restrict frontend domain
 
 @app.route('/chat', methods=['POST'])
 def chat():
