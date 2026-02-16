@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './ForgotPassword.css'; // reuse the same CSS file
+import './ForgotPassword.css';
+
+// ✅ Environment-safe backend URL
+const API_BASE_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -11,7 +15,7 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Grab stored email and code from localStorage
+  // Get stored email and reset code
   const resetEmail = localStorage.getItem('resetEmail');
   const resetCode = localStorage.getItem('resetCode');
 
@@ -30,6 +34,7 @@ const ResetPassword = () => {
       setError('Please fill all fields');
       return;
     }
+
     if (newPassword !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -38,19 +43,25 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/reset-password', {
-        email: resetEmail,
-        code: resetCode,
-        newPassword,
-      });
+      const res = await axios.post(
+        `${API_BASE_URL}/api/auth/reset-password`,
+        {
+          email: resetEmail,
+          code: resetCode,
+          newPassword,
+        }
+      );
 
       setMessage(res.data.message || 'Password reset successful!');
+
+      // Clear stored reset data
       localStorage.removeItem('resetEmail');
       localStorage.removeItem('resetCode');
 
       setTimeout(() => {
         navigate('/login');
       }, 1500);
+
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to reset password');
     } finally {
@@ -72,6 +83,7 @@ const ResetPassword = () => {
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           style={inputStyle}
+          required
         />
         <input
           type="password"
@@ -79,6 +91,7 @@ const ResetPassword = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           style={inputStyle}
+          required
         />
         <button type="submit" className="button-custom" disabled={loading}>
           {loading ? 'Resetting...' : 'Reset Password'}

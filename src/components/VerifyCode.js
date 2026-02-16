@@ -23,10 +23,10 @@ const VerifyCode = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/verify-code', {
-        email,
-        code,
-      });
+      const res = await axios.post(
+  `${process.env.REACT_APP_BACKEND_URL}/api/auth/verify-code`,
+  { email, code }
+);
 
       setMessage(res.data.message || 'Code verified successfully!');
       localStorage.setItem('resetEmail', email);

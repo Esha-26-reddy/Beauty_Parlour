@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000"
 
 const Register = () => {
   const [formData, setFormData] = useState({ email: '', phone: '', password: '' });
@@ -19,7 +20,7 @@ const Register = () => {
     setError(null);
   };
 
-  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000"
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

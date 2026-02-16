@@ -7,6 +7,8 @@ import { useAuth } from "../context/AuthContext";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import "./BuyNow.css";
+const API_BASE_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
 const BuyNow = () => {
   const { productId } = useParams();
@@ -65,7 +67,7 @@ console.log("✅ Razorpay Frontend Key:", key);
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/payment", {
+      const response = await fetch(`${API_BASE_URL}/api/payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: amountInRupees, name: product.name }),
@@ -98,7 +100,7 @@ console.log("✅ Razorpay Frontend Key:", key);
           alert("✅ Payment successful!\nPayment ID: " + response.razorpay_payment_id);
 
           try {
-            const orderRes = await fetch("http://localhost:5000/api/orders/create", {
+           const orderRes = await fetch(`${API_BASE_URL}/api/orders/create`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({

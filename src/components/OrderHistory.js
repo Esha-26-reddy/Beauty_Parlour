@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./OrderHistory.css";
+const API_BASE_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
@@ -17,7 +20,8 @@ const OrderHistory = () => {
       }
 
       try {
-        const res = await axios.get(`http://localhost:5000/api/orders/history/${email}`);
+       const res = await axios.get(
+       `${API_BASE_URL}/api/orders/history/${email}`);
         setOrders(res.data.orders || []);
       } catch (err) {
         console.error("Error fetching orders:", err);

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import "./Cart.css";
+const API_BASE_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
 
 const Cart = () => {
   const { cartItems, removeFromCart, clearCart } = useCart();
@@ -42,7 +45,7 @@ const Cart = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/payment/create-order", {
+      const res = await fetch(`${API_BASE_URL}/api/payment/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cartItems }),
@@ -79,8 +82,7 @@ const Cart = () => {
               })),
             };
 
-            const completeRes = await fetch(
-              "http://localhost:5000/api/orders/complete-cart",
+            const completeRes = await fetch(`${API_BASE_URL}/api/orders/complete-cart`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

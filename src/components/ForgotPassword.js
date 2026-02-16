@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import './ForgotPassword.css'; // Import CSS file
+const API_BASE_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -25,15 +27,16 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        'http://localhost:5000/api/auth/forgot-password',
-        { email },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+     const res = await axios.post(
+  `${API_BASE_URL}/api/auth/forgot-password`,
+  { email },
+  {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+);
+
 
       setMessage(res.data.message || 'Verification code sent! Check your email.');
 

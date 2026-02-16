@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Appointment.css";
 
+// ✅ Backend URL (works for local + production)
+const API_BASE_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
 const serviceDurations = {
   Haircut: 30,
   Facial: 60,
@@ -14,7 +18,7 @@ const serviceDurations = {
 };
 
 const salonOpenTime = 12 * 60; // 12:00 PM
-const salonCloseTime = 19 * 60 + 30; // 7:30 PM ✅ updated
+const salonCloseTime = 19 * 60 + 30; // 7:30 PM
 
 const blockedDates = ["2025-07-10", "2025-07-20"];
 
@@ -62,18 +66,27 @@ const Appointment = () => {
       if (!formData.date || !formData.service) return;
 
       setLoadingSlots(true);
+
       try {
-        const res = await axios.get(`http://localhost:5000/api/appointments?date=${formData.date}`);
+        const res = await axios.get(
+          `${API_BASE_URL}/api/appointments?date=${formData.date}`
+        );
+
         const bookedForDate = res.data.bookedSlots || [];
         const duration = serviceDurations[formData.service];
         const slots = generateSlots(duration);
-        const filteredSlots = slots.filter((slot) => !bookedForDate.includes(slot));
+
+        const filteredSlots = slots.filter(
+          (slot) => !bookedForDate.includes(slot)
+        );
+
         setAvailableSlots(filteredSlots);
         setFormData((prev) => ({ ...prev, timeSlot: "" }));
       } catch (err) {
-        console.error("Failed to fetch booked slots", err);
+        console.error("Failed to fetch booked slots:", err);
         setAvailableSlots([]);
       }
+
       setLoadingSlots(false);
     };
 
@@ -85,13 +98,13 @@ const Appointment = () => {
 
     if (name === "date") {
       if (isTuesday(value)) {
-        alert("Sorry, we are closed on Tuesdays. Please select another day.");
+        alert("Sorry, we are closed on Tuesdays.");
         resetForm();
         return;
       }
 
       if (blockedDates.includes(value)) {
-        alert("Sorry, the parlour is closed on this date. Please select another day.");
+        alert("Sorry, the parlour is closed on this date.");
         resetForm();
         return;
       }
@@ -121,12 +134,17 @@ const Appointment = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/appointments", formData);
+      const res = await axios.post(
+        `${API_BASE_URL}/api/appointments`,
+        formData
+      );
+
       alert(res.data.message);
       setBookingId(res.data.bookingId);
       setSubmitted(true);
     } catch (error) {
-      const message = error.response?.data?.message || "Failed to book appointment";
+      const message =
+        error.response?.data?.message || "Failed to book appointment";
       alert(message);
     }
   };
@@ -140,8 +158,9 @@ const Appointment = () => {
           {formatDateDMY(formData.date)} at {formData.timeSlot}.
         </p>
         <p>
-          Your booking ID is <strong>{bookingId}</strong><br />
-          You will receive your confirmation on your registered email id.
+          Your booking ID is <strong>{bookingId}</strong>
+          <br />
+          You will receive confirmation on your registered email id.
         </p>
       </div>
     );
@@ -150,6 +169,7 @@ const Appointment = () => {
   return (
     <div className="appointment-page">
       <h2>Book an Appointment</h2>
+
       <form onSubmit={handleSubmit} className="appointment-form">
         <input
           type="text"
@@ -159,6 +179,7 @@ const Appointment = () => {
           onChange={handleChange}
           required
         />
+
         <input
           type="email"
           name="email"
@@ -167,6 +188,7 @@ const Appointment = () => {
           onChange={handleChange}
           required
         />
+
         <input
           type="tel"
           name="phone"
@@ -177,6 +199,7 @@ const Appointment = () => {
           title="Enter 10-digit phone number"
           required
         />
+
         <input
           type="date"
           name="date"
@@ -185,6 +208,7 @@ const Appointment = () => {
           required
           min={new Date().toISOString().split("T")[0]}
         />
+
         <select
           name="service"
           value={formData.service}
@@ -218,11 +242,16 @@ const Appointment = () => {
           </select>
         )}
 
-        {availableSlots.length === 0 && formData.service && !loadingSlots && (
-          <p>No available slots for this service on selected date.</p>
-        )}
+        {availableSlots.length === 0 &&
+          formData.service &&
+          !loadingSlots && (
+            <p>No available slots for this service on selected date.</p>
+          )}
 
-        <button type="submit" disabled={availableSlots.length === 0 || loadingSlots}>
+        <button
+          type="submit"
+          disabled={availableSlots.length === 0 || loadingSlots}
+        >
           Book Now
         </button>
       </form>
