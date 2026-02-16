@@ -57,10 +57,8 @@ const Cart = () => {
       }
 
       const options = {
-        key:
-          process.env.REACT_APP_RAZORPAY_KEY_ID ||
-          window.env?.REACT_APP_RAZORPAY_KEY_ID ||
-          import.meta.env?.VITE_RAZORPAY_KEY_ID,
+         key: process.env.REACT_APP_RAZORPAY_KEY_ID,
+
         amount: data.order.amount,
         currency: data.order.currency,
         name: "Rohini Beauty Parlour",

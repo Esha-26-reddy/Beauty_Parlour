@@ -26,9 +26,9 @@ const BuyNow = () => {
   const [customerPhone, setCustomerPhone] = useState("");
   const [showCustomerForm, setShowCustomerForm] = useState(false);
 
-  const key =
-    process.env.REACT_APP_RAZORPAY_KEY_ID ||
-    (import.meta.env && import.meta.env.VITE_RAZORPAY_KEY_ID);
+   const key = process.env.REACT_APP_RAZORPAY_KEY_ID;
+console.log("✅ Razorpay Frontend Key:", key);
+
 
   useEffect(() => {
     const script = document.createElement("script");

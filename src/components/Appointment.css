@@ -22,7 +22,7 @@
 }
 
 .appointment-form button {
-  background-color: #e78f8f;
+  background-color:#ec407a;
   color: white;
   border: none;
   cursor: pointer;
@@ -30,5 +30,5 @@
 }
 
 .appointment-form button:hover {
-  background-color: #d47a7a;
+  background-color:  #e91e63;
 }
