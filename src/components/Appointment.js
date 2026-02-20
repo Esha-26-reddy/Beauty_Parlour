@@ -1,190 +1,136 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import "./Appointment.css";
 
-// ✅ Backend URL (works for local + production)
-const API_BASE_URL =
-  process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-
-const serviceDurations = {
-  Haircut: 30,
-  Facial: 60,
-  Cleanup: 30,
-  Threading: 20,
-  Waxing: 30,
-  Pedicure: 30,
-  Manicure: 30,
-  "Hair Massage": 60,
-};
-
-const salonOpenTime = 12 * 60; // 12:00 PM
-const salonCloseTime = 19 * 60 + 30; // 7:30 PM
-
-const blockedDates = ["2025-07-10", "2025-07-20"];
-
-const isTuesday = (dateStr) => new Date(dateStr).getDay() === 2;
-
-const minutesToTimeString = (minutes) => {
-  let hrs = Math.floor(minutes / 60);
-  let mins = minutes % 60;
-  let ampm = hrs >= 12 ? "PM" : "AM";
-  hrs = hrs % 12;
-  if (hrs === 0) hrs = 12;
-  return `${hrs}:${mins.toString().padStart(2, "0")} ${ampm}`;
-};
-
-const formatDateDMY = (isoDateStr) => {
-  const [year, month, day] = isoDateStr.split("-");
-  return `${day}/${month}/${year}`;
-};
-
 const Appointment = () => {
+
+  const serviceDurations = {
+    "Haircut": 30,
+    "Facial": 60,
+    "Waxing": 30,
+    "Threading": 15,
+    "Manicure": 40,
+    "Pedicure": 40,
+    "Bridal Makeup": 0
+  };
+
+  const OPEN_TIME = 12 * 60;        // 12:00 PM
+  const CLOSE_TIME = 19 * 60 + 30;  // 7:30 PM
+
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
+    email: "",
     date: "",
     service: "",
-    timeSlot: "",
+    timeSlot: ""
   });
 
   const [availableSlots, setAvailableSlots] = useState([]);
-  const [submitted, setSubmitted] = useState(false);
-  const [bookingId, setBookingId] = useState("");
-  const [loadingSlots, setLoadingSlots] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const generateSlots = (duration) => {
-    const slots = [];
-    for (let time = salonOpenTime; time + duration <= salonCloseTime; time += duration) {
-      slots.push(minutesToTimeString(time));
-    }
-    return slots;
+  // Convert minutes to 12-hour format
+  const minutesToTime = (mins) => {
+    let hours = Math.floor(mins / 60);
+    let minutes = mins % 60;
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    if (hours === 0) hours = 12;
+    return `${hours}:${minutes.toString().padStart(2, "0")} ${ampm}`;
   };
 
+  // Generate time slots (memoized to prevent ESLint warning)
+  const generateSlots = useCallback((service) => {
+    if (service === "Bridal Makeup") {
+      return ["12:00 PM", "3:30 PM"];
+    }
+
+    const duration = serviceDurations[service];
+    const slots = [];
+
+    for (let time = OPEN_TIME; time + duration <= CLOSE_TIME; time += duration) {
+      slots.push(minutesToTime(time));
+    }
+
+    return slots;
+  }, []);
+
+  // Update slots when service changes
   useEffect(() => {
-    const fetchBookedSlots = async () => {
-      if (!formData.date || !formData.service) return;
-
-      setLoadingSlots(true);
-
-      try {
-        const res = await axios.get(
-          `${API_BASE_URL}/api/appointments?date=${formData.date}`
-        );
-
-        const bookedForDate = res.data.bookedSlots || [];
-        const duration = serviceDurations[formData.service];
-        const slots = generateSlots(duration);
-
-        const filteredSlots = slots.filter(
-          (slot) => !bookedForDate.includes(slot)
-        );
-
-        setAvailableSlots(filteredSlots);
-        setFormData((prev) => ({ ...prev, timeSlot: "" }));
-      } catch (err) {
-        console.error("Failed to fetch booked slots:", err);
-        setAvailableSlots([]);
-      }
-
-      setLoadingSlots(false);
-    };
-
-    fetchBookedSlots();
-  }, [formData.date, formData.service]);
+    if (formData.service) {
+      setAvailableSlots(generateSlots(formData.service));
+    } else {
+      setAvailableSlots([]);
+    }
+  }, [formData.service, generateSlots]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "date") {
-      if (isTuesday(value)) {
-        alert("Sorry, we are closed on Tuesdays.");
-        resetForm();
-        return;
-      }
-
-      if (blockedDates.includes(value)) {
-        alert("Sorry, the parlour is closed on this date.");
-        resetForm();
+      const selectedDate = new Date(value);
+      if (selectedDate.getDay() === 2) {
+        setMessage("❌ We are closed on Tuesdays. Please select another day.");
         return;
       }
     }
 
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      date: "",
-      service: "",
-      timeSlot: "",
-    });
-    setAvailableSlots([]);
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.timeSlot) {
-      alert("Please select a time slot.");
-      return;
-    }
+    setLoading(true);
+    setMessage("");
 
     try {
-      const res = await axios.post(
-        `${API_BASE_URL}/api/appointments`,
+      await axios.post(
+        "http://localhost:5000/api/appointments",
         formData
       );
 
-      alert(res.data.message);
-      setBookingId(res.data.bookingId);
-      setSubmitted(true);
-    } catch (error) {
-      const message =
-        error.response?.data?.message || "Failed to book appointment";
-      alert(message);
-    }
-  };
+      setMessage(
+        "✅ Your appointment has been booked successfully! A confirmation email has been sent to your registered email address."
+      );
 
-  if (submitted) {
-    return (
-      <div className="appointment-page">
-        <h2>Thank you!</h2>
-        <p>
-          Your appointment for {formData.service} has been booked on{" "}
-          {formatDateDMY(formData.date)} at {formData.timeSlot}.
-        </p>
-        <p>
-          Your booking ID is <strong>{bookingId}</strong>
-          <br />
-          You will receive confirmation on your registered email id.
-        </p>
-      </div>
-    );
-  }
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        date: "",
+        service: "",
+        timeSlot: ""
+      });
+
+      setAvailableSlots([]);
+
+    } catch (error) {
+      setMessage(
+        error.response?.data?.message || "❌ Something went wrong"
+      );
+    }
+
+    setLoading(false);
+  };
 
   return (
     <div className="appointment-page">
-      <h2>Book an Appointment</h2>
+      <h2>Book Appointment</h2>
+
+      {message && (
+        <p className={message.includes("❌") ? "error-message" : "success-message"}>
+          {message}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit} className="appointment-form">
+
         <input
           type="text"
           name="name"
-          placeholder="Your Name"
+          placeholder="Full Name"
           value={formData.name}
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          value={formData.email}
           onChange={handleChange}
           required
         />
@@ -195,8 +141,15 @@ const Appointment = () => {
           placeholder="Phone Number"
           value={formData.phone}
           onChange={handleChange}
-          pattern="[0-9]{10}"
-          title="Enter 10-digit phone number"
+          required
+        />
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          value={formData.email}
+          onChange={handleChange}
           required
         />
 
@@ -214,7 +167,6 @@ const Appointment = () => {
           value={formData.service}
           onChange={handleChange}
           required
-          disabled={!formData.date}
         >
           <option value="">Select Service</option>
           {Object.keys(serviceDurations).map((service) => (
@@ -224,9 +176,7 @@ const Appointment = () => {
           ))}
         </select>
 
-        {loadingSlots && <p>Loading available slots...</p>}
-
-        {availableSlots.length > 0 && !loadingSlots && (
+        {availableSlots.length > 0 && (
           <select
             name="timeSlot"
             value={formData.timeSlot}
@@ -242,18 +192,10 @@ const Appointment = () => {
           </select>
         )}
 
-        {availableSlots.length === 0 &&
-          formData.service &&
-          !loadingSlots && (
-            <p>No available slots for this service on selected date.</p>
-          )}
-
-        <button
-          type="submit"
-          disabled={availableSlots.length === 0 || loadingSlots}
-        >
-          Book Now
+        <button type="submit" disabled={loading}>
+          {loading ? "Booking..." : "Book Appointment"}
         </button>
+
       </form>
     </div>
   );
