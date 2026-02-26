@@ -2,20 +2,25 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import "./Appointment.css";
 
+/* ✅ Constants outside component (prevents ESLint error) */
+const serviceDurations = {
+  Haircut: 30,
+  Facial: 60,
+  Waxing: 30,
+  Threading: 15,
+  Manicure: 40,
+  Pedicure: 40,
+  "Bridal Makeup": 0,
+};
+
+const OPEN_TIME = 12 * 60;        // 12:00 PM
+const CLOSE_TIME = 19 * 60 + 30;  // 7:30 PM
+
+/* ✅ Environment-based API URL */
+const API_BASE_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
 const Appointment = () => {
-
-  const serviceDurations = {
-    "Haircut": 30,
-    "Facial": 60,
-    "Waxing": 30,
-    "Threading": 15,
-    "Manicure": 40,
-    "Pedicure": 40,
-    "Bridal Makeup": 0
-  };
-
-  const OPEN_TIME = 12 * 60;        // 12:00 PM
-  const CLOSE_TIME = 19 * 60 + 30;  // 7:30 PM
 
   const [formData, setFormData] = useState({
     name: "",
@@ -23,7 +28,7 @@ const Appointment = () => {
     email: "",
     date: "",
     service: "",
-    timeSlot: ""
+    timeSlot: "",
   });
 
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -40,7 +45,7 @@ const Appointment = () => {
     return `${hours}:${minutes.toString().padStart(2, "0")} ${ampm}`;
   };
 
-  // Generate time slots (memoized to prevent ESLint warning)
+  // Generate slots (no ESLint warning now)
   const generateSlots = useCallback((service) => {
     if (service === "Bridal Makeup") {
       return ["12:00 PM", "3:30 PM"];
@@ -86,12 +91,12 @@ const Appointment = () => {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/appointments",
+        `${API_BASE_URL}/api/appointments`,
         formData
       );
 
       setMessage(
-        "✅ Your appointment has been booked successfully! A confirmation email has been sent to your registered email address."
+        "✅ Your appointment has been booked successfully! A confirmation email has been sent."
       );
 
       setFormData({
@@ -100,7 +105,7 @@ const Appointment = () => {
         email: "",
         date: "",
         service: "",
-        timeSlot: ""
+        timeSlot: "",
       });
 
       setAvailableSlots([]);
