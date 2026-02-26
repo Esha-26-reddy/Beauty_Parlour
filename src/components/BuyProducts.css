@@ -14,7 +14,7 @@
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 cards in a row by default */
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
   padding: 0 1rem;
 }
@@ -73,9 +73,10 @@
   color: #e91e63;
   margin-bottom: 1rem;
 }
+
 .product-packsize {
-  font-size: 18px;   /* increased from 16px */
-  font-weight: 600;  /* slightly bolder */
+  font-size: 18px;
+  font-weight: 600;
   color: #333;
   margin: 6px 0;
 }
@@ -88,28 +89,59 @@
   text-decoration: none;
   border-radius: 8px;
   font-weight: bold;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .buy-now-link:hover {
   background-color: #e91e63;
+  transform: translateY(-2px);
 }
+
+/* Disclaimer */
 .disclaimer-banner {
   background-color: #fff3cd;
   border-left: 4px solid #ffa500;
   color: #856404;
-  padding: 8px 12px;        /* reduced padding */
-  margin: 12px 0;           /* reduced margin */
-  border-radius: 5px;       /* slightly smaller radius */
-  font-size: 0.9rem;        /* overall font size reduced */
+  padding: 8px 12px;
+  margin: 12px 0;
+  border-radius: 5px;
+  font-size: 0.9rem;
 }
 
 .disclaimer-title {
   font-weight: 600;
-  font-size: 0.95rem;       /* slightly smaller */
+  font-size: 0.95rem;
   margin-bottom: 2px;
 }
 
 .disclaimer-text {
   font-size: 0.85rem;
+}
+
+/* ============================= */
+/* ✅ Invoice Buttons (UPDATED)  */
+/* ============================= */
+
+.invoice-button-group {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.invoice-btn {
+  background-color: #ff4081;
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.invoice-btn:hover {
+  background-color: #e91e63;
+  transform: translateY(-2px);
 }

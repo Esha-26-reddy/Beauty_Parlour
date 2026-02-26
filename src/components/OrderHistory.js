@@ -10,7 +10,7 @@ const OrderHistory = () => {
   const [loading, setLoading] = useState(true);
 
   // Get email ONLY from localStorage (from payment)
-  const email = localStorage.getItem("userEmail");
+  const email = localStorage.getItem("userEmail")?.toLowerCase();
 
   useEffect(() => {
     const fetchOrders = async () => {

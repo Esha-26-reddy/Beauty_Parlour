@@ -104,15 +104,17 @@ console.log("✅ Razorpay Frontend Key:", key);
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                productId: product.id,
-                productName: product.name,
-                quantity,
-                amount: amountInRupees,
-                paymentId: response.razorpay_payment_id,
-                customerName,
-                customerEmail,
-                customerPhone,
-              }),
+  razorpay_order_id: response.razorpay_order_id,
+  razorpay_payment_id: response.razorpay_payment_id,
+  razorpay_signature: response.razorpay_signature,
+  productId: product.id,
+  productName: product.name,
+  quantity,
+  amount: amountInRupees,
+  customerName,
+  customerEmail,
+  customerPhone,
+}),
             });
 
             const result = await orderRes.json();
@@ -196,16 +198,20 @@ console.log("✅ Razorpay Frontend Key:", key);
           <p><strong>Quantity:</strong> {quantity}</p>
           <p><strong>Total Amount:</strong> ₹{amountInRupees.toFixed(2)}</p>
 
-          <button onClick={generateInvoicePDF} className="download-invoice-btn">
-            📄 Download Invoice
-          </button>
-          <button
-            onClick={() => navigate("/order-history")}
-            className="view-orders-button"
-           style={{ marginTop: "10px" }}
-          >
-            📦 View Order History
-          </button>
+        <div className="invoice-button-group">
+  <button onClick={generateInvoicePDF} className="invoice-btn">
+    📄 Download Invoice
+  </button>
+
+  <button
+    onClick={() => navigate("/order-history")}
+    className="invoice-btn"
+  >
+    📦 View Order History
+  </button>
+</div>
+
+
         </div>
       </div>
     );

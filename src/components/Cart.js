@@ -69,18 +69,20 @@ const Cart = () => {
         order_id: data.order.id,
         handler: async function (response) {
           try {
-            const payload = {
-              email,
-              name,
-              phone,
-              paymentId: response.razorpay_payment_id,
-              cartItems: cartItems.map((item) => ({
-                id: item.id || "",
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity || 1,
-              })),
-            };
+           const payload = {
+  razorpay_order_id: response.razorpay_order_id,
+  razorpay_payment_id: response.razorpay_payment_id,
+  razorpay_signature: response.razorpay_signature,
+  email,
+  name,
+  phone,
+  cartItems: cartItems.map((item) => ({
+    id: item.id || "",
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity || 1,
+  })),
+};
 
             const completeRes = await fetch(`${API_BASE_URL}/api/orders/complete-cart`,
               {
