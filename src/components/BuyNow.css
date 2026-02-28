@@ -304,3 +304,16 @@
   color: #555;
   white-space: pre-wrap;
 }
+/* Mobile Button Center Fix */
+@media (max-width: 499px) {
+  .button-group {
+    width: 100%;
+    align-items: center;
+  }
+
+  .buy-now-button,
+  .add-to-cart-button {
+    width: 90%;
+    max-width: 300px;
+  }
+}

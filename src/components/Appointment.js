@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import "./Appointment.css";
 
-/* ✅ Constants outside component (prevents ESLint error) */
+/* ✅ Service Durations */
 const serviceDurations = {
   Haircut: 30,
   Facial: 60,
@@ -16,7 +16,6 @@ const serviceDurations = {
 const OPEN_TIME = 12 * 60;        // 12:00 PM
 const CLOSE_TIME = 19 * 60 + 30;  // 7:30 PM
 
-/* ✅ Environment-based API URL */
 const API_BASE_URL =
   process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
@@ -35,7 +34,7 @@ const Appointment = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Convert minutes to 12-hour format
+  /* Convert minutes to 12-hour format */
   const minutesToTime = (mins) => {
     let hours = Math.floor(mins / 60);
     let minutes = mins % 60;
@@ -45,7 +44,7 @@ const Appointment = () => {
     return `${hours}:${minutes.toString().padStart(2, "0")} ${ampm}`;
   };
 
-  // Generate slots (no ESLint warning now)
+  /* Generate time slots */
   const generateSlots = useCallback((service) => {
     if (service === "Bridal Makeup") {
       return ["12:00 PM", "3:30 PM"];
@@ -61,10 +60,12 @@ const Appointment = () => {
     return slots;
   }, []);
 
-  // Update slots when service changes
+  /* Update slots when service changes */
   useEffect(() => {
     if (formData.service) {
-      setAvailableSlots(generateSlots(formData.service));
+      const slots = generateSlots(formData.service);
+      setAvailableSlots(slots);
+      setFormData((prev) => ({ ...prev, timeSlot: "" })); // reset time
     } else {
       setAvailableSlots([]);
     }
@@ -77,10 +78,11 @@ const Appointment = () => {
       const selectedDate = new Date(value);
       if (selectedDate.getDay() === 2) {
         setMessage("❌ We are closed on Tuesdays. Please select another day.");
-        return;
+        return; // stop updating date
       }
     }
 
+    setMessage("");
     setFormData({ ...formData, [name]: value });
   };
 

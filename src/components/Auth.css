@@ -2,46 +2,102 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 80px;
   min-height: 100vh;
-  background: #fdf4f5;
+  padding-top: 80px;
+  background: linear-gradient(135deg, #fdf4f5, #fde2e6);
 }
 
+/* Card */
 .auth-form {
-  background: white;
-  padding: 30px 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  width: 300px;
+  background: #ffffff;
+  padding: 35px 40px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  width: 320px;
   text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
+/* Heading */
 .auth-form h2 {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   color: #e91e63;
+  font-weight: 600;
+  font-size: 1.4rem;
 }
 
+/* Inputs */
 .auth-form input {
   width: 100%;
-  padding: 10px;
+  padding: 12px 14px;
   margin-bottom: 15px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: 0.3s ease;
 }
 
+.auth-form input:focus {
+  outline: none;
+  border-color: #e91e63;
+  box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.15);
+}
+
+/* Button */
 .auth-form button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #e91e63;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: 0.3s ease;
 }
 
-.auth-form p {
-  margin-top: 15px;
-  color: #555;
+.auth-form button:hover {
+  background-color: #d81b60;
+  transform: translateY(-2px);
+}
+
+.auth-form button:disabled {
+  background-color: #f8a5c2;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Toggle text */
+.toggle-text {
+  margin-top: 18px;
+  font-size: 0.85rem;
+  color: #666;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.toggle-text:hover {
+  color: #e91e63;
   text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .auth-form {
+    width: 90%;
+    padding: 30px 20px;
+  }
 }

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -12,15 +14,21 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Normally you'd validate input or call a backend API here
-    login();         // ✅ Set auth state
-    navigate("/");   // ✅ Redirect to homepage after login
+    setLoading(true);
+
+    // Simulate API delay
+    setTimeout(() => {
+      login();
+      navigate("/");
+      setLoading(false);
+    }, 800);
   };
 
   return (
     <div className="auth-container">
       <div className="auth-form">
-        <h2>{isLogin ? "Login" : "Sign Up"}</h2>
+        <h2>{isLogin ? "Login" : "Create Account"}</h2>
+
         <form onSubmit={handleSubmit}>
           {!isLogin && (
             <>
@@ -28,12 +36,19 @@ const Auth = () => {
               <input type="tel" placeholder="Phone Number" required />
             </>
           )}
-          <input type="email" placeholder="Email" required />
+
+          <input type="email" placeholder="Email Address" required />
           <input type="password" placeholder="Password" required />
-          <button type="submit">{isLogin ? "Login" : "Sign Up"}</button>
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Please wait..." : isLogin ? "Login" : "Sign Up"}
+          </button>
         </form>
-        <p onClick={toggleForm} style={{ cursor: "pointer", marginTop: "10px" }}>
-          {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}
+
+        <p className="toggle-text" onClick={toggleForm}>
+          {isLogin
+            ? "Don't have an account? Sign Up"
+            : "Already have an account? Login"}
         </p>
       </div>
     </div>

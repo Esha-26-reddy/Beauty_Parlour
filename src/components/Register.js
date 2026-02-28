@@ -38,58 +38,116 @@ const Register = () => {
   };
 
   return (
-    <div style={{ paddingTop: '80px', maxWidth: 400, margin: 'auto' }}>
-      <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
-        <h2 style={{ color: '#e91e63' }}>Register</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          onChange={handleChange}
-          value={formData.email}
-          required
-          style={{ width: '100%', marginBottom: 10, padding: 8, boxSizing:'border-box',borderRadius:5 }}
-        />
-        <input
-          name="phone"
-          type="text"
-          placeholder="Phone"
-          onChange={handleChange}
-          value={formData.phone}
-          required
-          style={{ width: '100%', marginBottom: 10, padding: 8, boxSizing:'border-box', borderRadius:5}}
-           
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          onChange={handleChange}
-          value={formData.password}
-          required
-          style={{ width: '100%', marginBottom: 10, padding: 8 , boxSizing:'border-box',borderRadius:5}}
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: 10,
-            backgroundColor: '#e91e63',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer'
-          }}
-        >
-          {loading ? 'Registering...' : 'Register'}
-        </button>
-        <p style={{ marginTop: 15 , borderRadius:5}}>
-          Already have an account? <Link to="/login" style={{ color: '#e91e63' }}>Login</Link>
+  <div
+    style={{
+      minHeight: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '20px',
+      boxSizing: 'border-box',
+      backgroundColor: '#f9f9f9'
+    }}
+  >
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        width: '100%',
+        maxWidth: '400px',
+        backgroundColor: 'white',
+        padding: '25px 20px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+        textAlign: 'center'
+      }}
+    >
+      <h2 style={{ color: '#e91e63', marginBottom: '15px' }}>
+        Register
+      </h2>
+
+      {error && (
+        <p style={{ color: 'red', marginBottom: '10px' }}>
+          {error}
         </p>
-      </form>
-    </div>
-  );
+      )}
+
+      <input
+        name="email"
+        type="email"
+        placeholder="Email"
+        onChange={handleChange}
+        value={formData.email}
+        required
+        style={{
+          width: '100%',
+          marginBottom: '12px',
+          padding: '10px',
+          boxSizing: 'border-box',
+          borderRadius: '8px',
+          border: '1px solid #ccc'
+        }}
+      />
+
+      <input
+        name="phone"
+        type="text"
+        placeholder="Phone"
+        onChange={handleChange}
+        value={formData.phone}
+        required
+        style={{
+          width: '100%',
+          marginBottom: '12px',
+          padding: '10px',
+          boxSizing: 'border-box',
+          borderRadius: '8px',
+          border: '1px solid #ccc'
+        }}
+      />
+
+      <input
+        name="password"
+        type="password"
+        placeholder="Password"
+        onChange={handleChange}
+        value={formData.password}
+        required
+        style={{
+          width: '100%',
+          marginBottom: '15px',
+          padding: '10px',
+          boxSizing: 'border-box',
+          borderRadius: '8px',
+          border: '1px solid #ccc'
+        }}
+      />
+
+      <button
+        type="submit"
+        disabled={loading}
+        style={{
+          width: '100%',
+          padding: '12px',
+          backgroundColor: '#e91e63',
+          color: 'white',
+          border: 'none',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          fontWeight: '600'
+        }}
+      >
+        {loading ? 'Registering...' : 'Register'}
+      </button>
+
+      <p style={{ marginTop: '15px', fontSize: '14px' }}>
+        Already have an account?{' '}
+        <Link to="/login" style={{ color: '#e91e63', fontWeight: '500' }}>
+          Login
+        </Link>
+      </p>
+    </form>
+  </div>
+);
 };
 
 export default Register;

@@ -3,70 +3,93 @@
   flex-wrap: wrap;
   gap: 24px;
   justify-content: center;
-  padding: 2rem;
-  background-color: #f9f9f9;
+  padding: 3rem 2rem;
+
+  /* Soft pink → violet background */
+  background: linear-gradient(
+    135deg,
+    #ffe6f3 0%,
+    #f3e8ff 100%
+  );
 }
 
 .product-card {
   width: 260px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 18px 35px rgba(142, 45, 226, 0.25);
 }
 
 .product-img {
   width: 100%;
   height: 220px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 12px;
+  border-radius: 12px;
+  margin-bottom: 14px;
   user-select: none;
 }
 
 .product-name {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  margin: 0.5rem 0;
-  color: #222;
+  margin: 0.6rem 0;
+  color: #2c2c2c;
 }
 
 .product-description {
-  font-size: 0.9rem;
-  color: #555;
+  font-size: 0.92rem;
+  color: #666;
   min-height: 60px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
 }
+
 .product-price {
   font-weight: bold;
-  font-size: 1.1rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0.75rem;
-  color: #111;
+  font-size: 1.15rem;
+  margin-top: 0.6rem;
+  margin-bottom: 1rem;
+  color: #000; /* Black price as requested */
 }
 
+/* Buy Now Button */
 .buy-now-btn {
-  background-color: #ff4081;
+  background: linear-gradient(135deg, #ff4da6, #8e2de2);
   color: white;
-  padding: 10px 20px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: bold;
-  display: inline-block;
-  transition: background-color 0.3s ease;
-  user-select: none;
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-weight: 600;
   border: none;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+/* Hover Effect */
 .buy-now-btn:hover {
-  background-color: #e91e63;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(142, 45, 226, 0.4);
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .products-container {
+    padding: 2rem 1rem;
+  }
+
+  .product-card {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .product-img {
+    height: 200px;
+  }
 }
